@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Request Detail - Duke Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 24px;
+            height: 100%;
+            width: 2px;
+            background: #e5e7eb;
+        }
+        .timeline-item:last-child::before {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg flex flex-col">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Duke Energy</h1>
+                        <p class="text-xs text-gray-500">Admin Portal</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 p-4 overflow-y-auto">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="index.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-home w-5"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="customer-profile.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-users w-5"></i>
+                            <span>Customers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="service-request-detail.html" class="flex items-center space-x-3 px-4 py-3 text-white bg-blue-600 rounded-lg">
+                            <i class="fas fa-clipboard-list w-5"></i>
+                            <span>Service Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="enrollment-queue.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-user-plus w-5"></i>
+                            <span>Enrollments</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-wrench w-5"></i>
+                            <span>Service Catalog</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-bell w-5"></i>
+                            <span>Reminders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-chart-bar w-5"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-gray-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Jessica Davis</p>
+                        <p class="text-xs text-gray-500">Back Office Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Header -->
+            <header class="bg-white border-b border-gray-200 px-8 py-4 sticky top-0 z-10">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <a href="index.html" class="text-sm text-gray-500 hover:text-blue-600">
+                            <i class="fas fa-arrow-left mr-2"></i>Back to Dashboard
+                        </a>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg relative">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-8">
+                <!-- Service Request Header -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <div class="flex items-center space-x-3 mb-2">
+                                <h1 class="text-2xl font-bold text-gray-800 font-mono">SR-2025-1142</h1>
+                                <span class="px-3 py-1 bg-green-100 text-green-700 text-sm font-semibold rounded-full">
+                                    <i class="fas fa-check-circle mr-1"></i>Completed
+                                </span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                                    <i class="fas fa-shield-alt mr-1"></i>HPP Covered
+                                </span>
+                            </div>
+                            <div class="flex items-center space-x-4 text-sm text-gray-600">
+                                <span><i class="fas fa-calendar mr-2"></i>Created: Nov 10, 2025</span>
+                                <span><i class="fas fa-clock mr-2"></i>Completed: Nov 15, 2025</span>
+                                <span><i class="fas fa-hourglass-half mr-2"></i>Resolution Time: 5 days</span>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-lg hover:bg-red-700" onclick="showEscalationModal()">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>Escalate
+                            </button>
+                            <button class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700" onclick="showActionsMenu()">
+                                <i class="fas fa-edit mr-2"></i>Actions
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-3 gap-6">
+                    <!-- Main Content Area (2/3 width) -->
+                    <div class="col-span-2 space-y-6">
+                        <!-- Customer Information -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-user text-blue-600 mr-2"></i>Customer Information
+                            </h2>
+                            <div class="flex items-start space-x-4">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <span class="text-xl font-bold text-blue-600">EM</span>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="flex items-center space-x-2 mb-2">
+                                        <h3 class="text-lg font-semibold text-gray-800">Eleanor Mitchell</h3>
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">Duke Native</span>
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                                        <div class="flex items-center text-gray-600">
+                                            <i class="fas fa-id-card w-5 mr-2"></i>
+                                            <span class="font-mono">DKE-458923</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-600">
+                                            <i class="fas fa-envelope w-5 mr-2"></i>
+                                            <span>eleanor.mitchell@email.com</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-600">
+                                            <i class="fas fa-phone w-5 mr-2"></i>
+                                            <span>(919) 555-0142</span>
+                                        </div>
+                                        <div class="flex items-center text-gray-600">
+                                            <i class="fas fa-home w-5 mr-2"></i>
+                                            <span>2847 Oak Street, Durham, NC 27705</span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <a href="customer-profile.html" class="text-sm text-blue-600 hover:text-blue-700 font-medium">
+                                            View Full Profile →
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Service Details -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-clipboard-list text-blue-600 mr-2"></i>Service Details
+                            </h2>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">Service Type</label>
+                                    <p class="text-base font-semibold text-gray-800 mt-1">HPP - Annual Maintenance</p>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">Category</label>
+                                    <p class="text-base font-semibold text-gray-800 mt-1">
+                                        <i class="fas fa-wind text-blue-600 mr-2"></i>HVAC
+                                    </p>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">Problem Description</label>
+                                    <div class="mt-1 p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                                        <p class="text-sm text-gray-800">Annual preventive maintenance for HVAC system as part of HVAC Protection Plan. Customer scheduled routine service appointment.</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">Related Inventory Item</label>
+                                    <div class="mt-1 p-3 bg-blue-50 border border-blue-200 rounded-lg flex items-center justify-between">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-wind text-white"></i>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-semibold text-gray-800">HVAC System</p>
+                                                <p class="text-xs text-gray-600">Carrier Infinity 3-Ton Heat Pump</p>
+                                            </div>
+                                        </div>
+                                        <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">View Details →</button>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-sm font-medium text-gray-600">HPP Plan Coverage</label>
+                                    <div class="mt-1 p-3 bg-green-50 border border-green-200 rounded-lg">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="text-sm font-semibold text-gray-800">HVAC Protection Plan</span>
+                                            <span class="px-2 py-1 bg-green-500 text-white text-xs font-semibold rounded">Active</span>
+                                        </div>
+                                        <p class="text-xs text-gray-600">Annual maintenance included. No charge to customer.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contractor Notes -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-comment-dots text-blue-600 mr-2"></i>Contractor Work Notes
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-user-hard-hat text-gray-600"></i>
+                                            <span class="text-sm font-semibold text-gray-800">Mike Thompson, Carolina Comfort Services</span>
+                                        </div>
+                                        <span class="text-xs text-gray-500">Nov 15, 2025 at 10:45 AM</span>
+                                    </div>
+                                    <p class="text-sm text-gray-700 mb-3">Completed annual preventive maintenance on Carrier Infinity heat pump system. Work performed:</p>
+                                    <ul class="text-sm text-gray-700 space-y-1 ml-4">
+                                        <li>• Cleaned condenser coils</li>
+                                        <li>• Checked refrigerant levels (R-410A) - within normal range</li>
+                                        <li>• Inspected electrical connections - all secure</li>
+                                        <li>• Replaced air filter (16x25x1 MERV 11)</li>
+                                        <li>• Tested thermostat operation - working properly</li>
+                                        <li>• Checked blower motor and belt - no issues</li>
+                                        <li>• Verified proper airflow throughout system</li>
+                                    </ul>
+                                    <p class="text-sm text-gray-700 mt-3">System is operating efficiently. No immediate repairs needed. Recommend next maintenance in 12 months.</p>
+                                </div>
+                                <div class="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <div class="flex items-start justify-between mb-2">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="fas fa-user-hard-hat text-blue-600"></i>
+                                            <span class="text-sm font-semibold text-gray-800">Mike Thompson, Carolina Comfort Services</span>
+                                        </div>
+                                        <span class="text-xs text-gray-500">Nov 15, 2025 at 8:15 AM</span>
+                                    </div>
+                                    <p class="text-sm text-gray-700">Arrived on-site. Customer very friendly. Starting annual maintenance inspection.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Admin Notes -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <h2 class="text-lg font-semibold text-gray-800 flex items-center">
+                                    <i class="fas fa-sticky-note text-blue-600 mr-2"></i>Admin Notes
+                                </h2>
+                                <button class="px-3 py-1 bg-blue-600 text-white text-sm font-medium rounded hover:bg-blue-700" onclick="showAddNoteModal()">
+                                    <i class="fas fa-plus mr-1"></i>Add Note
+                                </button>
+                            </div>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                                    <div class="flex items-start justify-between mb-1">
+                                        <span class="text-sm font-medium text-gray-800">Preferred morning appointments</span>
+                                        <span class="text-xs text-gray-500">Nov 10, 2025</span>
+                                    </div>
+                                    <p class="text-xs text-gray-600">Customer requested morning appointment (8-11 AM) when booking. Scheduled accordingly.</p>
+                                    <p class="text-xs text-gray-500 mt-1">— Jessica Davis</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar (1/3 width) -->
+                    <div class="space-y-6">
+                        <!-- Contractor Information -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-user-hard-hat text-blue-600 mr-2"></i>Contractor
+                            </h2>
+                            <div class="text-center mb-4">
+                                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                                    <i class="fas fa-building text-blue-600 text-2xl"></i>
+                                </div>
+                                <h3 class="font-semibold text-gray-800">Carolina Comfort Services</h3>
+                                <p class="text-xs text-gray-500 mb-3">Primary HVAC Contractor</p>
+                                <div class="flex items-center justify-center space-x-1">
+                                    <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    <i class="fas fa-star text-yellow-500 text-sm"></i>
+                                    <span class="text-sm font-semibold text-gray-700 ml-2">5.0</span>
+                                </div>
+                            </div>
+                            <div class="space-y-2 text-sm mb-4">
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-user w-5 mr-2"></i>
+                                    <span>Mike Thompson (Technician)</span>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-phone w-5 mr-2"></i>
+                                    <span>(919) 555-0987</span>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-envelope w-5 mr-2"></i>
+                                    <span class="text-xs">dispatch@carolinacomfort.com</span>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-map-marker-alt w-5 mr-2"></i>
+                                    <span class="text-xs">Durham, Raleigh, Chapel Hill</span>
+                                </div>
+                            </div>
+                            <button class="w-full px-4 py-2 bg-white border border-blue-600 text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50" onclick="showReassignModal()">
+                                <i class="fas fa-exchange-alt mr-2"></i>Reassign Contractor
+                            </button>
+                        </div>
+
+                        <!-- Scheduling -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-calendar-alt text-blue-600 mr-2"></i>Schedule
+                            </h2>
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="text-xs font-medium text-gray-600">Scheduled Date</label>
+                                    <p class="text-sm font-semibold text-gray-800 mt-1">Friday, November 15, 2025</p>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-gray-600">Time Window</label>
+                                    <p class="text-sm font-semibold text-gray-800 mt-1">8:00 AM - 11:00 AM</p>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-gray-600">Actual Arrival</label>
+                                    <p class="text-sm font-semibold text-gray-800 mt-1">8:15 AM</p>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-gray-600">Completion Time</label>
+                                    <p class="text-sm font-semibold text-gray-800 mt-1">10:45 AM</p>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-gray-600">Duration</label>
+                                    <p class="text-sm font-semibold text-gray-800 mt-1">2 hours 30 minutes</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Status History Timeline -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-history text-blue-600 mr-2"></i>Status History
+                            </h2>
+                            <div class="space-y-4">
+                                <div class="relative pl-6 timeline-item">
+                                    <div class="absolute left-0 top-0 w-4 h-4 bg-green-500 rounded-full border-2 border-white"></div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">Completed</p>
+                                        <p class="text-xs text-gray-500">Nov 15, 2025 at 10:45 AM</p>
+                                        <p class="text-xs text-gray-600 mt-1">Service completed successfully. Customer satisfaction rating: 5/5</p>
+                                    </div>
+                                </div>
+                                <div class="relative pl-6 timeline-item">
+                                    <div class="absolute left-0 top-0 w-4 h-4 bg-blue-500 rounded-full border-2 border-white"></div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">On-Site</p>
+                                        <p class="text-xs text-gray-500">Nov 15, 2025 at 8:15 AM</p>
+                                        <p class="text-xs text-gray-600 mt-1">Contractor arrived at property</p>
+                                    </div>
+                                </div>
+                                <div class="relative pl-6 timeline-item">
+                                    <div class="absolute left-0 top-0 w-4 h-4 bg-purple-500 rounded-full border-2 border-white"></div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">En Route</p>
+                                        <p class="text-xs text-gray-500">Nov 15, 2025 at 7:50 AM</p>
+                                        <p class="text-xs text-gray-600 mt-1">Contractor en route to customer location</p>
+                                    </div>
+                                </div>
+                                <div class="relative pl-6 timeline-item">
+                                    <div class="absolute left-0 top-0 w-4 h-4 bg-indigo-500 rounded-full border-2 border-white"></div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">Assigned</p>
+                                        <p class="text-xs text-gray-500">Nov 11, 2025 at 9:30 AM</p>
+                                        <p class="text-xs text-gray-600 mt-1">Assigned to Carolina Comfort Services</p>
+                                    </div>
+                                </div>
+                                <div class="relative pl-6 timeline-item">
+                                    <div class="absolute left-0 top-0 w-4 h-4 bg-yellow-500 rounded-full border-2 border-white"></div>
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">Requested</p>
+                                        <p class="text-xs text-gray-500">Nov 10, 2025 at 2:15 PM</p>
+                                        <p class="text-xs text-gray-600 mt-1">Service request created by customer via mobile app</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="bg-white rounded-lg shadow-md p-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                                <i class="fas fa-bolt text-blue-600 mr-2"></i>Quick Actions
+                            </h2>
+                            <div class="space-y-2">
+                                <button class="w-full px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 flex items-center justify-center" onclick="showUpdateStatusModal()">
+                                    <i class="fas fa-sync-alt mr-2"></i>Update Status
+                                </button>
+                                <button class="w-full px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 flex items-center justify-center">
+                                    <i class="fas fa-file-download mr-2"></i>Export Details
+                                </button>
+                                <button class="w-full px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50 flex items-center justify-center">
+                                    <i class="fas fa-envelope mr-2"></i>Email Customer
+                                </button>
+                                <button class="w-full px-4 py-2 bg-white border border-red-300 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 flex items-center justify-center" onclick="showCancelModal()">
+                                    <i class="fas fa-times-circle mr-2"></i>Cancel Request
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal placeholders (would show with JavaScript in real implementation) -->
+    <script>
+        function showReassignModal() {
+            alert('Reassign Contractor modal would open here');
+        }
+
+        function showEscalationModal() {
+            alert('Create Escalation Ticket modal would open here');
+        }
+
+        function showActionsMenu() {
+            alert('Actions dropdown menu would open here');
+        }
+
+        function showAddNoteModal() {
+            alert('Add Admin Note modal would open here');
+        }
+
+        function showUpdateStatusModal() {
+            alert('Update Status modal would open here');
+        }
+
+        function showCancelModal() {
+            alert('Cancel Service Request confirmation modal would open here');
+        }
+    </script>
+</body>
+</html>

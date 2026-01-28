@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment Queue - Duke Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 50;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal.show {
+            display: block;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 800px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-white shadow-lg flex flex-col">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-gray-800">Duke Energy</h1>
+                        <p class="text-xs text-gray-500">Admin Portal</p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 p-4 overflow-y-auto">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="index.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-home w-5"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="customer-profile.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-users w-5"></i>
+                            <span>Customers</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="service-request-detail.html" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-clipboard-list w-5"></i>
+                            <span>Service Requests</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="enrollment-queue.html" class="flex items-center space-x-3 px-4 py-3 text-white bg-blue-600 rounded-lg">
+                            <i class="fas fa-user-plus w-5"></i>
+                            <span>Enrollments</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-wrench w-5"></i>
+                            <span>Service Catalog</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-bell w-5"></i>
+                            <span>Reminders</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100">
+                            <i class="fas fa-chart-bar w-5"></i>
+                            <span>Analytics</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user text-gray-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-semibold text-gray-800">Jessica Davis</p>
+                        <p class="text-xs text-gray-500">Back Office Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Header -->
+            <header class="bg-white border-b border-gray-200 px-8 py-4 sticky top-0 z-10">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800">HPP Enrollment Queue</h1>
+                        <p class="text-sm text-gray-600 mt-1">Manual processing for customer enrollments (MVP fallback)</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg relative">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-8">
+                <!-- Summary Cards -->
+                <div class="grid grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-yellow-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 text-sm font-medium">Pending</span>
+                            <i class="fas fa-clock text-yellow-500 text-xl"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-800">8</p>
+                        <p class="text-xs text-gray-500 mt-1">Awaiting review</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 text-sm font-medium">In Progress</span>
+                            <i class="fas fa-spinner text-blue-500 text-xl"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-800">4</p>
+                        <p class="text-xs text-gray-500 mt-1">Being processed</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-green-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 text-sm font-medium">Processed Today</span>
+                            <i class="fas fa-check-circle text-green-500 text-xl"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-800">15</p>
+                        <p class="text-xs text-gray-500 mt-1">↑ 25% vs yesterday</p>
+                    </div>
+                    <div class="bg-white rounded-lg shadow p-4 border-l-4 border-gray-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 text-sm font-medium">Avg Process Time</span>
+                            <i class="fas fa-hourglass-half text-gray-500 text-xl"></i>
+                        </div>
+                        <p class="text-3xl font-bold text-gray-800">12m</p>
+                        <p class="text-xs text-gray-500 mt-1">Per enrollment</p>
+                    </div>
+                </div>
+
+                <!-- Filters & Search -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="grid grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>All Statuses</option>
+                                <option>Pending</option>
+                                <option>In Progress</option>
+                                <option>Processed</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date Range</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>Today</option>
+                                <option>Last 7 Days</option>
+                                <option>Last 30 Days</option>
+                                <option>Custom</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Assigned To</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option>All Admins</option>
+                                <option>Jessica Davis (Me)</option>
+                                <option>Mark Thompson</option>
+                                <option>Sarah Chen</option>
+                                <option>Unassigned</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Search</label>
+                            <div class="relative">
+                                <input type="text" placeholder="Name, email, or phone" class="w-full px-3 py-2 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Enrollment Queue Table -->
+                <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                        <h2 class="text-lg font-semibold text-gray-800">Queue (12 items)</h2>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50">
+                                <i class="fas fa-file-export mr-1"></i>Export
+                            </button>
+                            <button class="px-3 py-1 text-sm text-blue-600 border border-blue-600 rounded hover:bg-blue-50">
+                                <i class="fas fa-redo mr-1"></i>Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50 border-b border-gray-200">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Customer</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Contact</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Requested Plans</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Submitted</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Assigned To</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <!-- Pending Enrollments -->
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-sm font-bold text-purple-600">RM</span>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-semibold text-gray-800">Robert Martinez</p>
+                                                <p class="text-xs text-gray-500">New Customer</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-gray-800">robert.martinez@email.com</p>
+                                        <p class="text-xs text-gray-500">(919) 555-0234</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-wrap gap-1">
+                                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">Water Heater</span>
+                                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">HVAC</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <p class="text-sm text-gray-800">Nov 19, 2025</p>
+                                        <p class="text-xs text-gray-500">9:15 AM</p>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">
+                                            <i class="fas fa-clock mr-1"></i>Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm text-gray-500">Unassigned</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex space-x-2">
+                                            <button onclick="openProcessModal('Robert Martinez')" class="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
+                                                <i class="fas fa-play mr-1"></i>Process
+                                            </button>
+                                            <button onclick="assignToMe(this)" class="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-50">
+                                                <i class="fas fa-user-check mr-1"></i>Assign to Me
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-sm font-bold text-green-600">LW</span>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-semibold text-gray-800">Lisa Wong</p>
+                                                <p class="text-xs text-gray-500">Duke Customer</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-gray-800">lisa.wong@email.com</p>
+                                        <p class="text-xs text-gray-500">(919) 555-0456</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">Plumbing</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <p class="text-sm text-gray-800">Nov 19, 2025</p>
+                                        <p class="text-xs text-gray-500">8:42 AM</p>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded-full">
+                                            <i class="fas fa-clock mr-1"></i>Pending
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="text-sm text-gray-500">Unassigned</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex space-x-2">
+                                            <button onclick="openProcessModal('Lisa Wong')" class="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
+                                                <i class="fas fa-play mr-1"></i>Process
+                                            </button>
+                                            <button onclick="assignToMe(this)" class="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-50">
+                                                <i class="fas fa-user-check mr-1"></i>Assign to Me
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- In Progress Enrollments -->
+                                <tr class="hover:bg-gray-50 bg-blue-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-sm font-bold text-blue-600">DK</span>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-semibold text-gray-800">David Kim</p>
+                                                <p class="text-xs text-gray-500">P&G Customer</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-gray-800">david.kim@email.com</p>
+                                        <p class="text-xs text-gray-500">(919) 555-0789</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">Water Heater</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <p class="text-sm text-gray-800">Nov 19, 2025</p>
+                                        <p class="text-xs text-gray-500">7:23 AM</p>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                                            <i class="fas fa-spinner mr-1"></i>In Progress
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center mr-2">
+                                                <i class="fas fa-user text-gray-600 text-xs"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-800 font-medium">Jessica Davis</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex space-x-2">
+                                            <button onclick="openProcessModal('David Kim')" class="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
+                                                <i class="fas fa-arrow-right mr-1"></i>Continue
+                                            </button>
+                                            <button class="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-50">
+                                                <i class="fas fa-eye mr-1"></i>View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr class="hover:bg-gray-50 bg-blue-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-sm font-bold text-orange-600">JT</span>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-semibold text-gray-800">Jennifer Taylor</p>
+                                                <p class="text-xs text-gray-500">Duke Customer</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-gray-800">j.taylor@email.com</p>
+                                        <p class="text-xs text-gray-500">(919) 555-0345</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex flex-wrap gap-1">
+                                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">HVAC</span>
+                                            <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">Electrical</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <p class="text-sm text-gray-800">Nov 18, 2025</p>
+                                        <p class="text-xs text-gray-500">4:56 PM</p>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                                            <i class="fas fa-spinner mr-1"></i>In Progress
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center mr-2">
+                                                <i class="fas fa-user text-gray-600 text-xs"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-800 font-medium">Mark Thompson</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex space-x-2">
+                                            <button class="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-50">
+                                                <i class="fas fa-eye mr-1"></i>View
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <!-- Processed Enrollments (Recent) -->
+                                <tr class="hover:bg-gray-50 bg-green-50">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 bg-teal-100 rounded-full flex items-center justify-center mr-3">
+                                                <span class="text-sm font-bold text-teal-600">MP</span>
+                                            </div>
+                                            <div>
+                                                <p class="text-sm font-semibold text-gray-800">Michael Patel</p>
+                                                <p class="text-xs text-gray-500">New Customer</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <p class="text-sm text-gray-800">m.patel@email.com</p>
+                                        <p class="text-xs text-gray-500">(919) 555-0567</p>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded">Water Heater</span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <p class="text-sm text-gray-800">Nov 18, 2025</p>
+                                        <p class="text-xs text-gray-500">3:12 PM</p>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-semibold rounded-full">
+                                            <i class="fas fa-check-circle mr-1"></i>Processed
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center mr-2">
+                                                <i class="fas fa-user text-gray-600 text-xs"></i>
+                                            </div>
+                                            <span class="text-sm text-gray-800 font-medium">Sarah Chen</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <button class="px-3 py-1 bg-white border border-gray-300 text-gray-700 text-xs font-medium rounded hover:bg-gray-50">
+                                            <i class="fas fa-eye mr-1"></i>View
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="px-6 py-4 border-t border-gray-200 flex items-center justify-between">
+                        <div class="text-sm text-gray-600">
+                            Showing <span class="font-semibold">1-5</span> of <span class="font-semibold">12</span> enrollments
+                        </div>
+                        <div class="flex space-x-2">
+                            <button class="px-3 py-1 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50" disabled>
+                                <i class="fas fa-chevron-left mr-1"></i>Previous
+                            </button>
+                            <button class="px-3 py-1 text-sm text-white bg-blue-600 border border-blue-600 rounded">1</button>
+                            <button class="px-3 py-1 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50">2</button>
+                            <button class="px-3 py-1 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50">3</button>
+                            <button class="px-3 py-1 text-sm text-gray-700 border border-gray-300 rounded hover:bg-gray-50">
+                                Next<i class="fas fa-chevron-right ml-1"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Process Enrollment Modal -->
+    <div id="processModal" class="modal">
+        <div class="modal-content">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between bg-blue-600">
+                <h2 class="text-xl font-bold text-white">Process Enrollment</h2>
+                <button onclick="closeProcessModal()" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <div class="p-6">
+                <!-- Step 1: Customer Info -->
+                <div id="step1" class="space-y-4">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Customer: <span id="modalCustomerName"></span></h3>
+                        <p class="text-sm text-gray-600">Step 1 of 3: Search for existing customer in CRM</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Search CRM</label>
+                        <div class="relative">
+                            <input type="text" placeholder="Search by account #, email, phone, or address" class="w-full px-4 py-3 pl-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <i class="fas fa-search absolute left-3 top-4 text-gray-400"></i>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <p class="text-sm font-medium text-gray-700 mb-3">Search Results:</p>
+                        <div class="space-y-2">
+                            <div class="bg-white border border-gray-200 rounded p-3 hover:bg-blue-50 cursor-pointer" onclick="selectExistingCustomer()">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">Robert Martinez</p>
+                                        <p class="text-xs text-gray-600">Duke Account: 3456789123 • robert.martinez@email.com</p>
+                                        <p class="text-xs text-gray-500">1847 Elm Street, Durham, NC 27703</p>
+                                    </div>
+                                    <button class="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
+                                        Select
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="bg-white border border-gray-200 rounded p-3 hover:bg-blue-50 cursor-pointer">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-sm font-semibold text-gray-800">Robert J. Martinez</p>
+                                        <p class="text-xs text-gray-600">P&G Account: 9876543210 • robertjm@email.com</p>
+                                        <p class="text-xs text-gray-500">542 Pine Avenue, Raleigh, NC 27601</p>
+                                    </div>
+                                    <button class="px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded hover:bg-blue-700">
+                                        Select
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                        <button onclick="createNewCustomer()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-user-plus mr-2"></i>Create New Customer
+                        </button>
+                        <div class="flex space-x-2">
+                            <button onclick="closeProcessModal()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Plan Selection (hidden initially) -->
+                <div id="step2" class="space-y-4 hidden">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Step 2 of 3: Select HPP Plans</h3>
+                        <p class="text-sm text-gray-600">Customer requested: Water Heater, HVAC</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="border-2 border-blue-500 bg-white rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center space-x-3">
+                                    <input type="checkbox" checked class="w-5 h-5 text-blue-600 rounded">
+                                    <div>
+                                        <p class="font-semibold text-gray-800">Water Heater Protection Plan</p>
+                                        <p class="text-xs text-gray-600">Code: WH-STD • $9.99/month</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="border-2 border-blue-500 bg-white rounded-lg p-4">
+                            <div class="flex items-center justify-between mb-2">
+                                <div class="flex items-center space-x-3">
+                                    <input type="checkbox" checked class="w-5 h-5 text-blue-600 rounded">
+                                    <div>
+                                        <p class="font-semibold text-gray-800">HVAC Protection Plan</p>
+                                        <p class="text-xs text-gray-600">Code: HVAC-PLUS • $14.99/month</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center justify-between">
+                            <span class="font-semibold text-gray-800">Total Monthly Price:</span>
+                            <span class="text-2xl font-bold text-blue-600">$24.98</span>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between pt-4 border-t border-gray-200">
+                        <button onclick="backToStep1()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-arrow-left mr-2"></i>Back
+                        </button>
+                        <button onclick="goToStep3()" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700">
+                            Next: Review<i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Review & Submit (hidden initially) -->
+                <div id="step3" class="space-y-4 hidden">
+                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Step 3 of 3: Review & Submit</h3>
+                        <p class="text-sm text-gray-600">Verify enrollment details before submitting</p>
+                    </div>
+
+                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-3">Customer Information</h4>
+                        <dl class="grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                            <dt class="text-gray-600">Name:</dt>
+                            <dd class="font-semibold text-gray-800">Robert Martinez</dd>
+                            <dt class="text-gray-600">Account:</dt>
+                            <dd class="font-semibold text-gray-800 font-mono">3456789123</dd>
+                            <dt class="text-gray-600">Email:</dt>
+                            <dd class="text-gray-800">robert.martinez@email.com</dd>
+                            <dt class="text-gray-600">Phone:</dt>
+                            <dd class="text-gray-800">(919) 555-0234</dd>
+                        </dl>
+                    </div>
+
+                    <div class="bg-white border border-gray-200 rounded-lg p-4">
+                        <h4 class="font-semibold text-gray-800 mb-3">Selected Plans</h4>
+                        <ul class="space-y-2">
+                            <li class="flex items-center justify-between text-sm">
+                                <span class="text-gray-800">Water Heater Protection Plan</span>
+                                <span class="font-semibold text-gray-800">$9.99/mo</span>
+                            </li>
+                            <li class="flex items-center justify-between text-sm">
+                                <span class="text-gray-800">HVAC Protection Plan</span>
+                                <span class="font-semibold text-gray-800">$14.99/mo</span>
+                            </li>
+                            <li class="flex items-center justify-between text-sm pt-2 border-t border-gray-200">
+                                <span class="font-semibold text-gray-800">Total:</span>
+                                <span class="text-lg font-bold text-blue-600">$24.98/mo</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="flex justify-between pt-4 border-t border-gray-200">
+                        <button onclick="backToStep2()" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-50">
+                            <i class="fas fa-arrow-left mr-2"></i>Back
+                        </button>
+                        <button onclick="submitEnrollment()" class="px-6 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700">
+                            <i class="fas fa-check mr-2"></i>Submit Enrollment
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCustomerName = '';
+
+        function openProcessModal(customerName) {
+            currentCustomerName = customerName;
+            document.getElementById('modalCustomerName').textContent = customerName;
+            document.getElementById('processModal').classList.add('show');
+            // Reset to step 1
+            document.getElementById('step1').classList.remove('hidden');
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.add('hidden');
+        }
+
+        function closeProcessModal() {
+            document.getElementById('processModal').classList.remove('show');
+        }
+
+        function selectExistingCustomer() {
+            document.getElementById('step1').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        }
+
+        function createNewCustomer() {
+            alert('Create New Customer form would open here');
+        }
+
+        function backToStep1() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step1').classList.remove('hidden');
+        }
+
+        function goToStep3() {
+            document.getElementById('step2').classList.add('hidden');
+            document.getElementById('step3').classList.remove('hidden');
+        }
+
+        function backToStep2() {
+            document.getElementById('step3').classList.add('hidden');
+            document.getElementById('step2').classList.remove('hidden');
+        }
+
+        function submitEnrollment() {
+            alert('Enrollment submitted successfully!\n\nIn the real system, this would:\n1. Create enrollment in CRM (Duke/P&G system)\n2. Update customer record\n3. Move queue item to "Processed" status\n4. Send confirmation email to customer');
+            closeProcessModal();
+        }
+
+        function assignToMe(button) {
+            const row = button.closest('tr');
+            const assignedCell = row.querySelector('td:nth-child(6)');
+            assignedCell.innerHTML = `
+                <div class="flex items-center">
+                    <div class="w-6 h-6 bg-gray-300 rounded-full flex items-center justify-center mr-2">
+                        <i class="fas fa-user text-gray-600 text-xs"></i>
+                    </div>
+                    <span class="text-sm text-gray-800 font-medium">Jessica Davis</span>
+                </div>
+            `;
+            const statusCell = row.querySelector('td:nth-child(5)');
+            statusCell.innerHTML = `
+                <span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-semibold rounded-full">
+                    <i class="fas fa-spinner mr-1"></i>In Progress
+                </span>
+            `;
+            row.classList.add('bg-blue-50');
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('processModal');
+            if (event.target === modal) {
+                closeProcessModal();
+            }
+        }
+    </script>
+</body>
+</html>

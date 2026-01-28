@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duke Energy Admin Portal - Operations Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Sidebar -->
+    <div class="flex h-screen">
+        <aside class="w-64 bg-blue-900 text-white flex flex-col">
+            <div class="p-6 border-b border-blue-800">
+                <h1 class="text-xl font-bold">Duke Energy</h1>
+                <p class="text-sm text-blue-300">Admin Portal</p>
+            </div>
+            <nav class="flex-1 p-4">
+                <a href="index.html" class="flex items-center px-4 py-3 bg-blue-800 rounded-lg mb-2">
+                    <i class="fas fa-th-large mr-3"></i>
+                    Dashboard
+                </a>
+                <a href="customer-profile.html" class="flex items-center px-4 py-3 hover:bg-blue-800 rounded-lg mb-2">
+                    <i class="fas fa-users mr-3"></i>
+                    Customers
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 hover:bg-blue-800 rounded-lg mb-2">
+                    <i class="fas fa-clipboard-list mr-3"></i>
+                    Service Requests
+                </a>
+                <a href="enrollment-queue.html" class="flex items-center px-4 py-3 hover:bg-blue-800 rounded-lg mb-2">
+                    <i class="fas fa-inbox mr-3"></i>
+                    Enrollment Queue
+                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">12</span>
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 hover:bg-blue-800 rounded-lg mb-2">
+                    <i class="fas fa-tags mr-3"></i>
+                    Service Catalog
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 hover:bg-blue-800 rounded-lg mb-2">
+                    <i class="fas fa-bell mr-3"></i>
+                    Reminders
+                </a>
+                <a href="#" class="flex items-center px-4 py-3 hover:bg-blue-800 rounded-lg mb-2">
+                    <i class="fas fa-chart-bar mr-3"></i>
+                    Analytics
+                </a>
+            </nav>
+            <div class="p-4 border-t border-blue-800">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center">
+                        <span class="text-sm font-semibold">JD</span>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm font-semibold">Jessica Davis</p>
+                        <p class="text-xs text-blue-300">Back Office Admin</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <!-- Top Bar -->
+            <header class="bg-white shadow-sm border-b border-gray-200">
+                <div class="px-8 py-4 flex items-center justify-between">
+                    <div>
+                        <h2 class="text-2xl font-bold text-gray-800">Operations Dashboard</h2>
+                        <p class="text-sm text-gray-600">Welcome back, Jessica! Here's what's happening today.</p>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <button class="relative p-2 text-gray-600 hover:text-gray-800">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+                        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-plus mr-2"></i>Create Service Request
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="p-8">
+                <!-- KPI Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <!-- Active Service Requests -->
+                    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 text-sm font-medium">Active Service Requests</span>
+                            <i class="fas fa-clipboard-list text-blue-500 text-2xl"></i>
+                        </div>
+                        <div class="flex items-baseline">
+                            <span class="text-3xl font-bold text-gray-800">127</span>
+                            <span class="ml-2 text-sm text-green-600 font-medium">
+                                <i class="fas fa-arrow-up"></i> 8.2%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">vs last week</p>
+                    </div>
+
+                    <!-- Pending Enrollments -->
+                    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-amber-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 text-sm font-medium">Pending Enrollments</span>
+                            <i class="fas fa-inbox text-amber-500 text-2xl"></i>
+                        </div>
+                        <div class="flex items-baseline">
+                            <span class="text-3xl font-bold text-gray-800">12</span>
+                            <span class="ml-2 text-sm text-red-600 font-medium">
+                                <i class="fas fa-arrow-down"></i> 15%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Avg processing: 18 hrs</p>
+                    </div>
+
+                    <!-- Open Tickets -->
+                    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-red-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 text-sm font-medium">Open Tickets</span>
+                            <i class="fas fa-exclamation-circle text-red-500 text-2xl"></i>
+                        </div>
+                        <div class="flex items-baseline">
+                            <span class="text-3xl font-bold text-gray-800">8</span>
+                            <span class="ml-2 text-sm text-gray-600 font-medium">
+                                <i class="fas fa-minus"></i> 0%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">3 urgent priority</p>
+                    </div>
+
+                    <!-- Today's Completions -->
+                    <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-gray-600 text-sm font-medium">Today's Completions</span>
+                            <i class="fas fa-check-circle text-green-500 text-2xl"></i>
+                        </div>
+                        <div class="flex items-baseline">
+                            <span class="text-3xl font-bold text-gray-800">45</span>
+                            <span class="ml-2 text-sm text-green-600 font-medium">
+                                <i class="fas fa-arrow-up"></i> 12%
+                            </span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Target: 50/day</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions & Recent Activity -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+                        <div class="space-y-3">
+                            <a href="enrollment-queue.html" class="flex items-center p-3 bg-amber-50 rounded-lg hover:bg-amber-100 transition">
+                                <i class="fas fa-inbox text-amber-600 text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium text-gray-800">Process Enrollment Queue</p>
+                                    <p class="text-xs text-gray-600">12 pending</p>
+                                </div>
+                            </a>
+                            <a href="customer-profile.html" class="flex items-center p-3 bg-blue-50 rounded-lg hover:bg-blue-100 transition">
+                                <i class="fas fa-user-search text-blue-600 text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium text-gray-800">Search Customer</p>
+                                    <p class="text-xs text-gray-600">Lookup by name, email, or ID</p>
+                                </div>
+                            </a>
+                            <a href="service-request-detail.html" class="flex items-center p-3 bg-green-50 rounded-lg hover:bg-green-100 transition">
+                                <i class="fas fa-tools text-green-600 text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium text-gray-800">View Service Requests</p>
+                                    <p class="text-xs text-gray-600">Monitor active requests</p>
+                                </div>
+                            </a>
+                            <a href="#" class="flex items-center p-3 bg-red-50 rounded-lg hover:bg-red-100 transition">
+                                <i class="fas fa-exclamation-triangle text-red-600 text-xl mr-3"></i>
+                                <div>
+                                    <p class="font-medium text-gray-800">View Escalations</p>
+                                    <p class="text-xs text-gray-600">8 open tickets</p>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="lg:col-span-2 bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-start">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3"></div>
+                                <div class="flex-1">
+                                    <p class="text-sm text-gray-800"><span class="font-semibold">Service Request #SR-2847</span> completed by ABC Plumbing</p>
+                                    <p class="text-xs text-gray-500">Customer: Eleanor Mitchell • 2 minutes ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3"></div>
+                                <div class="flex-1">
+                                    <p class="text-sm text-gray-800"><span class="font-semibold">New enrollment</span> processed for Emma Johnson</p>
+                                    <p class="text-xs text-gray-500">Plan: HVAC + Water Heater • 15 minutes ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-2 h-2 bg-amber-500 rounded-full mt-2 mr-3"></div>
+                                <div class="flex-1">
+                                    <p class="text-sm text-gray-800"><span class="font-semibold">Service Request #SR-2845</span> reassigned to Premium HVAC Services</p>
+                                    <p class="text-xs text-gray-500">Reason: Original contractor unavailable • 32 minutes ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-2 h-2 bg-red-500 rounded-full mt-2 mr-3"></div>
+                                <div class="flex-1">
+                                    <p class="text-sm text-gray-800"><span class="font-semibold">Escalation ticket #ESC-445</span> created by Nathan Rodriguez</p>
+                                    <p class="text-xs text-gray-500">Issue: Contractor no-show • 1 hour ago</p>
+                                </div>
+                            </div>
+                            <div class="flex items-start">
+                                <div class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3"></div>
+                                <div class="flex-1">
+                                    <p class="text-sm text-gray-800"><span class="font-semibold">Service Request #SR-2842</span> completed by Elite Electrical</p>
+                                    <p class="text-xs text-gray-500">Customer: Michael Chen • Rating: 5 stars • 1 hour ago</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Requests Overview -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <!-- Service Requests by Status -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Service Requests by Status</h3>
+                        <canvas id="statusChart" height="200"></canvas>
+                    </div>
+
+                    <!-- Recent Service Requests -->
+                    <div class="bg-white rounded-lg shadow p-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Service Requests</h3>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full">
+                                <thead>
+                                    <tr class="border-b border-gray-200">
+                                        <th class="text-left text-xs font-semibold text-gray-600 pb-2">ID</th>
+                                        <th class="text-left text-xs font-semibold text-gray-600 pb-2">Customer</th>
+                                        <th class="text-left text-xs font-semibold text-gray-600 pb-2">Status</th>
+                                        <th class="text-left text-xs font-semibold text-gray-600 pb-2">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="py-3 text-sm text-blue-600 font-medium">SR-2847</td>
+                                        <td class="py-3 text-sm text-gray-800">Eleanor Mitchell</td>
+                                        <td class="py-3"><span class="px-2 py-1 bg-green-100 text-green-700 text-xs font-medium rounded">Completed</span></td>
+                                        <td class="py-3"><a href="service-request-detail.html" class="text-blue-600 text-sm hover:underline">View</a></td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="py-3 text-sm text-blue-600 font-medium">SR-2846</td>
+                                        <td class="py-3 text-sm text-gray-800">David Park</td>
+                                        <td class="py-3"><span class="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded">En Route</span></td>
+                                        <td class="py-3"><a href="service-request-detail.html" class="text-blue-600 text-sm hover:underline">View</a></td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="py-3 text-sm text-blue-600 font-medium">SR-2845</td>
+                                        <td class="py-3 text-sm text-gray-800">Sarah Thompson</td>
+                                        <td class="py-3"><span class="px-2 py-1 bg-purple-100 text-purple-700 text-xs font-medium rounded">Assigned</span></td>
+                                        <td class="py-3"><a href="service-request-detail.html" class="text-blue-600 text-sm hover:underline">View</a></td>
+                                    </tr>
+                                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                                        <td class="py-3 text-sm text-blue-600 font-medium">SR-2844</td>
+                                        <td class="py-3 text-sm text-gray-800">Michael Chen</td>
+                                        <td class="py-3"><span class="px-2 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded">Requested</span></td>
+                                        <td class="py-3"><a href="service-request-detail.html" class="text-blue-600 text-sm hover:underline">View</a></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Service Requests by Status Chart
+        const ctx = document.getElementById('statusChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Requested', 'Assigned', 'En Route', 'On-Site', 'Completed'],
+                datasets: [{
+                    data: [18, 32, 24, 8, 45],
+                    backgroundColor: [
+                        '#FCD34D',
+                        '#A78BFA',
+                        '#60A5FA',
+                        '#34D399',
+                        '#10B981'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
